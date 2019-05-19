@@ -1,0 +1,317 @@
+\documentclass[a4paper]{article}
+\usepackage[9pt]{extsizes}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{setspace,amsmath}
+\usepackage[left=15mm, top=15mm, right=15mm, bottom=15mm, nohead, footskip=10mm]{geometry} % настройки полей документа
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{tabu}
+\usepackage{booktabs}% for better rules in the table
+\usepackage{tabularx}
+ 
+\begin{document} % начало документа
+ 
+% НАЧАЛО ТИТУЛЬНОГО ЛИСТА
+\begin{center}
+\LARGE{МИНОБРНАУКИ РОССИИ}\\
+\Large{\textbf{МОСКОВСКИЙ ФИЗИКО-ТЕХНИЧЕСКИЙ ИНСТИТУТ}}\\
+\Large{\textbf{(ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ)}}\\
+\vspace{\baselineskip}
+\large{Физтех-школа прикладной математики и информатики (ФПМИ)}\\
+\large{Факультет инноваций и высоких технологий (ФИВТ)}\\
+\large{Кафедра «Алгоритмы и технологии программирования»}\\
+
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\Huge{ПРОЕКТИРОВАНИЕ БАЗЫ ДАННЫХ ЦЕНТРА ОБРАЗОВАТЕЛЬНЫХ УСЛУГ}\\
+\vspace{\baselineskip}
+\large{Курсовой проект}
+\vspace{\baselineskip}
+\large{Выполнил}\\
+\large{Васильев Николай Константинович}\\
+\large{Группа Б05-827}\\
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\end{center}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\begin{center} Долгопрудный 2019 \end{center}
+\thispagestyle{empty} % выключаем отображение номера для этой страницы
+ 
+% КОНЕЦ ТИТУЛЬНОГО ЛИСТА
+ 
+\newpage
+ 
+\newpage
+\section{Концептуальная модель}
+Основные сущности:
+\begin{itemize}
+    \item Person
+    \item Contract
+    \item Course
+    \item Completion certificate
+\end{itemize}
+Отношения между сущностями приведены в схеме ниже:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{concept}
+\caption{Концептуальная модель}
+\label{fig:universe}
+\end{figure}
+ \newpage
+ 
+ \section{Логическая модель}
+Проектируемая база находится в 3НФ.\\
+Логическая модель приведена в схеме ниже:
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{logical}
+\caption{Логическая модель (ER-диаграмма)}
+\label{fig:universe}
+\end{figure}
+
+\newpage
+
+\section{Физическая модель}
+
+Далее:\\
+УК - уникальный ключ\\
+УКТС - уникальный ключ текущей сущности\\
+ВК - внешний ключ\\
+ФЛ - физлицо
+
+% regexp_match('^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$')
+
+
+% regexp_match(’^[0-9\+]{9,15}$’)
+
+\begin{table}[!hbt]
+\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|}
+\hline
+\multicolumn{6}{| c |}{\textbf{PERSON}} \\ \hline
+\textbf{Название} & \textbf{Описание} & \textbf{Тип данных }& \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
+person\_id & УК сущности физлицо & INT & & + & \\ \hline
+birth\_dt & Дата рождения & DATE & NOT NULL &  & \\ \hline
+inn\_no & Номер ИНН & VARCHAR(12) & * &  & \\ \hline
+email\_txt & Электронная почта & VARCHAR(100) & ** &  & \\ \hline
+phone\_no & Номер телефона & VARCHAR(20) & *** & & \\ \hline
+
+\end{tabularx}
+\caption{Сущность Person/Физлицо}
+\end{table}
+
+\begin{table}[!hbt]
+\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|}
+\hline
+\multicolumn{6}{| c |}{\textbf{PERSON\_HOME\_ADDRESS}} \\ \hline
+\textbf{Название} & \textbf{Описание} & \textbf{Тип данных }& \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
+person\_home\_address\_id &УКТС & INT & & + & \\ \hline
+person\_id & ВК сущн. ФЛ & INT & &  & + \\ \hline
+address\_txt & Адрес & VARCHAR(200) & NOT NULL &  & \\ \hline
+valid\_from\_dttm & Начало дейст. & TIMESTAMP(0) & & + & \\ \hline
+valid\_to\_dttm & Конец дейст. & TIMESTAMP(0) & NOT NULL, DEFAULT 9999-12-31 &  & \\ \hline
+
+\end{tabularx}
+\caption{Сущность Person home address/Домашний адрес физлица}
+\end{table}
+
+\begin{table}[!hbt]
+\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|}
+\hline
+\multicolumn{6}{| c |}{\textbf{PERSON\_DOCUMENT}} \\ \hline
+\textbf{Название} & \textbf{Описание} & \textbf{Тип данных }& \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
+person\_document\_id & УКТС & INT & & + & \\ \hline
+document\_no & Номер док. & INT & NOT NULL & & \\ \hline
+document\_series & Серия док. & VARCHAR(10) & & & \\ \hline
+document\_type\_txt & Тип документа & VARCHAR(20) & NOT NULL & & \\ \hline
+person\_id & ВК сущн. ФЛ & INT & &  & + \\ \hline
+person\_name\_nm  & Имя физлица & VARCHAR(100) & NOT NULL &  & \\ \hline
+authority\_no & Код подраздел. & VARCHAR(20) & &  & \\ \hline
+valid\_from\_dttm & Начало дейст. & TIMESTAMP(0) & & + & \\ \hline
+valid\_to\_dttm & Конец дейст. & TIMESTAMP(0) & NOT NULL, DEFAULT 9999-12-31 &  & \\ \hline
+
+\end{tabularx}
+\caption{Сущность Person document/Документ физлица}
+\end{table}
+
+\begin{table}[!hbt]
+\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{TEACHER\_PERSON}}                                                                          \\ \hline
+\textbf{Название}      & \textbf{Описание}     & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
+person\_id             & УК сущности физлицо   & INT                 &                      & +           & +           \\ \hline
+working\_start\_dt     & Дата начала работы    & DATE        & NOT NULL             &             &             \\ \hline
+salary\_amt            & Зарплата              & INT                 &            NOT NULL, >=0          &             &             \\ \hline
+employment\_record\_no & Номер трудовой книжки & INT                 & NOT NULL             &             &             \\ \hline
+\end{tabularx}
+\caption{Сущность Teacher person/Преподаватель}
+\end{table}
+
+\begin{table}[!hbt]
+\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{STUDENT\_PERSON}}                                                                          \\ \hline
+\textbf{Название}      & \textbf{Описание}     & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
+person\_id             & УК сущности физлицо   & INT                 &                      & +           & +           \\ \hline
+visits\_start\_dt      & Дата начала посещений & DATE        & NOT NULL             &             &             \\ \hline
+\end{tabularx}
+\caption{Сущность Student person/Студент}
+\end{table}
+
+ * - regexp\_match('\&\^{}\textbackslash{}d\{12\}?\textdollar{}')
+
+ ** - regex\_match('\^{}[a-zA-Z0-9\_.+-]+@[a-zA-Z0-9-]+\textbackslash{}.[a-zA-Z0-9-.]+\textdollar{}')
+ 
+
+*** - regexp\_match('\^{}[0-9\textbackslash{}+]\{9,15\}\textdollar{}')
+
+
+
+\newpage
+
+
+
+\begin{table}[!hbt]
+\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{PERSON\_X\_PERSON}}                                                                                                 \\ \hline
+\textbf{Название} & \textbf{Описание} & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
+person\_id & УК сущности физлицо & INT & & + & + \\ \hline
+x\_person\_id & УК сущности физлицо & INT & & + & + \\ \hline
+connection\_type\_txt  & Отношение person\_id к x\_person\_id & VARCHAR(50) & NOT NULL & & \\ \hline
+\end{tabularx}
+\caption{Сущность Person-Person}
+\end{table}
+
+\begin{table}[!hbt]
+\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{CONTRACT}}                                                                                 \\ \hline
+\textbf{Название}   & \textbf{Описание}        & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
+contract\_id        & УКТС     & INT                 &                      & +           &             \\ \hline
+contract\_dttm       & Дата заключения договора & TIMESTAMP(0)        & NOT NULL             &             &             \\ \hline
+student\_person\_id & ВК сущности студент      & INT                 &                      &             & +           \\ \hline
+payer\_person\_id   & ВК сущности физлицо      & INT                 &                      &             & +           \\ \hline
+course\_id          & ВК сущности курс         & INT                 &                      &             & +           \\ \hline
+termination\_dttm & Дата расторжения договора & TIMESTAMP(0) & & & \\ \hline
+\end{tabularx}
+\caption{Сущность Contract/Договор}
+\end{table}
+
+\begin{table}[!hbt]
+	\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|}
+		\hline
+		\multicolumn{6}{|c|}{\textbf{CONTRACT\_PAYMENT}}                                                                                    \\ \hline
+		\textbf{Название}     & \textbf{Описание}                  & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
+		contract\_payment\_id & УКТС        & INT                 &                      & +           &             \\ \hline
+		classes\_month\_no    & № оплач. месяца занятий & INT                 & NOT NULL, >= 0             &             &             \\ \hline
+		classes\_year\_no     & № оплач. года занятий   & INT                 & NOT NULL , >= 0            &             &             \\ \hline
+		payment\_dttm           & Дата оплаты                        & TIMESTAMP(0)        & NOT NULL             &             &             \\ \hline
+		payment\_amt          & Размер оплаты                      & INT                 & NOT NULL, >= 0            &             &             \\ \hline
+		contract\_id          & ВК сущности договор                & INT                 &                      &             & +           \\ \hline
+		card\_no & № карты (NULL - наличн.) & VARCHAR(16) & **** & & \\ \hline
+		card\_pay\_flg & Была ли оплата по карте & BOOLEAN & NOT NULL, DEFAULT FALSE & & \\ \hline
+	\end{tabularx}
+	\caption{Сущность Contract payment/Оплата договора}
+\end{table}
+
+\begin{table}[!hbt]
+\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{COURSE}}                                                                                    \\ \hline
+\textbf{Название}   & \textbf{Описание}         & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
+course\_id          & УКТС          & INT                 &                      & +           &             \\ \hline
+sphere\_txt         & Направление подготовки    & VARCHAR(100)        &                      &             &             \\ \hline
+name\_txt           & Название курса            & VARCHAR(100)        & NOT NULL             &             &             \\ \hline
+course\_start\_dt   & Начало занятий            & DATE        &         NOT NULL             &             &             \\ \hline
+course\_end\_dt     & Конец занятий             & DATE                 &       NOT NULL               &             &             \\ \hline
+month\_price\_amt & Стоимость в месяц & INT                 &     NOT NULL, >=0                 &             &           \\ \hline
+teacher\_person\_id & ВК сущности преподаватель & INT                 &                      &             & +           \\ \hline
+
+\end{tabularx}
+\caption{Сущность Person Course/Курс}
+\end{table}
+
+\begin{table}[!hbt]
+\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{COURSE\_CLASS}}                                                                                      \\ \hline
+\textbf{Название} & \textbf{Описание}                    & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
+course\_class\_id & УКТС & INT                 &                      & +           &             \\ \hline
+week\_day\_txt    & День недели занятия                  & VARCHAR(2)          & NOT NULL, *****             &             &             \\ \hline
+start\_tm         & Начало занятий                    &               TIME      & NOT NULL             &             &             \\ \hline
+end\_tm           & Конец занятий                        &     TIME               & NOT NULL             &             &             \\ \hline
+course\_id        & ВК сущности курс                     & INT                 &                      &             & +           \\ \hline
+\end{tabularx}
+\caption{Сущность Course class/Элемент расписания курса}
+\end{table}
+
+**** - regexp\_match('\^{}\textbackslash{}d\textdollar{}')
+
+***** - regexp\_match('[A-Z]\{2\}')
+
+\newpage
+
+\begin{table}[!hbt]
+	\begin{tabularx}{\textwidth}{|l|X|c|c|c|c|}
+		\hline
+		\multicolumn{6}{|c|}{\textbf{COMPLETION\_CERTIFICATE}}                                                                              \\ \hline
+		\textbf{Название}   & \textbf{Описание}                    & \textbf{Тип данных} & \textbf{Ограничение} & \textbf{PK} & \textbf{FK} \\ \hline
+		certificate\_id     & УКТС & INT                 &                      & +           &             \\ \hline
+		course\_id          & ВК сущности курс                     & INT                 &                      &             & +           \\ \hline
+		student\_person\_id & ВК сущности студент                  & INT                 &                      &             & +           \\ \hline
+		classes\_start\_dt  & Начало занятий                       & DATE        & NOT NULL             &             &             \\ \hline
+		classes\_end\_dt    & Конец занятий                        & DATE        & NOT NULL             &             &             \\ \hline
+	\end{tabularx}
+	\caption{Сущность Completion certificate/Сертификат об окончании курса}
+\end{table}
+
+
+
+
+
+
+
+\end{document}  % КОНЕЦ ДОКУМЕНТА !
